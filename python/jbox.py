@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import argparse
-import os
+import os, sys
+import shutil
 from PIL import Image, ImageOps
 
 def create_config_xml(gallery_name, images):
@@ -77,20 +78,23 @@ def resize_image(source_image, target_image, width, height):
 def prepare_images(source_dir, target_dir, target_image_dir, target_thumbnail_dir):
     '''Transform the image path array into an array of dicts containing img_path, thumbnail_path, img_title and img_caption'''
     images = []
-    for image_path in find_images(source_dir):
+    all_images = find_images(source_dir)
+    for i, image_path in enumerate(all_images):
+        sys.stdout.write('\r%3.0f%%' % (float(i) / len(all_images) * 100))
+        sys.stdout.flush()
         source_image = os.path.join(source_dir, image_path)
         target_thumbnail = os.path.join(target_thumbnail_dir, image_path)
         target_image = os.path.join(target_image_dir, image_path)
         try:
-            os.makedirs(os.path.join(target, os.path.dirname(target_thumbnail)))
+            os.makedirs(os.path.join(target_dir, os.path.dirname(target_thumbnail)))
         except:
             pass
         try:
-            os.makedirs(os.path.join(target, os.path.dirname(target_image)))
+            os.makedirs(os.path.join(target_dir, os.path.dirname(target_image)))
         except:
             pass
-        create_thumbnail(source_image, os.path.join(target, target_thumbnail), 85, 85)
-        resize_image(source_image, os.path.join(target, target_image), 1024, 768)
+        create_thumbnail(source_image, os.path.join(target_dir, target_thumbnail), 85, 85)
+        resize_image(source_image, os.path.join(target_dir, target_image), 1024, 768)
         image_title = os.path.splitext(os.path.basename(image_path))[0]
         images.append({
             'img_path': target_image,
@@ -99,21 +103,33 @@ def prepare_images(source_dir, target_dir, target_image_dir, target_thumbnail_di
             'img_caption': '',
             'source': source_image
         })
+    print '\r100%'
     return images
+
+def create_gallery(source_dir, target_dir, images_dir, thumbnails_dir, gallery_name, juicebox_src_dir):
+    '''target_dir must not exist'''
+    shutil.copytree(juicebox_src_dir, target_dir)
+
+    images = prepare_images(source_dir, target_dir, images_dir, thumbnails_dir)
+    config = create_config_xml(gallery_name, images)
+    with open(os.path.join(target_dir, 'config.xml'), 'w') as f:
+        f.write(config)
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('source_dir')
     parser.add_argument('target_dir')
+    parser.add_argument('gallery_name')
+    parser.add_argument('juicebox_src_dir')
     parser.add_argument('-i', '--images-dir', default='images')
     parser.add_argument('-t', '--thumbnails-dir', default='thumbs')
     args = parser.parse_args()
 
-    gallery_dir = args.source_dir
-    target = args.target_dir
-    images = prepare_images(gallery_dir, target, args.images_dir, args.thumbnails_dir)
-
-    with open(os.path.join(target, 'config.xml'), 'w') as f:
-        f.write(create_config_xml('gallery_name', images))
-
+    create_gallery(
+        args. source_dir,
+        args.target_dir,
+        args.images_dir,
+        args.thumbnails_dir,
+        args.gallery_name,
+        args.juicebox_src_dir)
