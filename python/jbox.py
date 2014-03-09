@@ -9,6 +9,10 @@ def create_config_xml(gallery_name, images):
     def gallery(gallery_name, images):
         return '''<juiceboxgallery 
 
+    enableAutoPlay="true"
+    showAutoPlayStatus="false"
+    showAutoPlayButton="true"
+    autoPlayOnLoad="true" 
     resizeOnImport="false"
     galleryTitle="%s"
     useFullscreenExpand="true"
