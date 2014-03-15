@@ -22,8 +22,8 @@ def find_galleries(root_path):
             image = os.path.join(dirpath, doc.getchildren()[1].attrib['imageURL'])
             yield {
                 'name': gallery_name,
-                'path': dirpath.strip(root_path + '/'),
-                'image': image.strip(root_path + '/')
+                'path': dirpath.replace(root_path + '/', ''),
+                'image': image.replace(root_path + '/', '')
             }
 
 def create_index(galleries):
@@ -88,4 +88,4 @@ if __name__ == '__main__':
     except:
         print 'Could not copy assets, probably already exists'
     with open(os.path.join(args.root_folder, 'index.html'), 'w') as f:
-        f.write(create_index(galleries))
+        f.write(create_index(galleries)..encode('ascii', 'ignore'))
