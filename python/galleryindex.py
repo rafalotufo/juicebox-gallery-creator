@@ -3,6 +3,7 @@
 import xml.etree.ElementTree as ET
 import argparse
 import os
+import shutil
 
 '''
 create gallery index
@@ -83,5 +84,5 @@ if __name__ == '__main__':
 
     galleries = find_galleries(args.root_folder)
     shutil.copytree(args.assets_dir, args.target)
-    with open(os.path.join(args.target, 'index.html')) as f:
+    with open(os.path.join(args.target, 'index.html'), 'w') as f:
         f.write(create_index(galleries))
