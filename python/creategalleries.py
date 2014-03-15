@@ -24,9 +24,10 @@ def find_galleries_args(args):
 
 def find_galleries(root_folder):
     for dirpath, _, filenames in os.walk(root_folder):
-        extensions = map(lambda f: os.path.splitext(f)[1].lower(), filenames)
-        if '.jpg' in extensions:
-            print dirpath
+        if os.path.basename(dirpath).find('.') != 0:
+            extensions = map(lambda f: os.path.splitext(f)[1].lower(), filenames)
+            if '.jpg' in extensions:
+                print dirpath
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
