@@ -83,6 +83,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     galleries = find_galleries(args.root_folder)
-    shutil.copytree(args.assets_dir, os.path.join(args.root_folder, 'asset'))
+    try:
+        shutil.copytree(args.assets_dir, os.path.join(args.root_folder, 'asset'))
+    except:
+        print 'Could not copy assets, probably already exists'
     with open(os.path.join(args.root_folder, 'index.html'), 'w') as f:
         f.write(create_index(galleries))
