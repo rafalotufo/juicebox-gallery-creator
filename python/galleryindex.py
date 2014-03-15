@@ -77,7 +77,10 @@ body {
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('root_folder')
+    parser.add_argument('target')
     args = parser.parse_args()
 
     galleries = find_galleries(args.root_folder)
-    print create_index(galleries)
+    shutil.copytree(juicebox_src_dir, args.target)
+    with open(os.path.join(args.target, 'index.html')) as f:
+        f.write(create_index(galleries))
