@@ -88,4 +88,4 @@ if __name__ == '__main__':
     except:
         print 'Could not copy assets, probably already exists'
     with open(os.path.join(args.root_folder, 'index.html'), 'w') as f:
-        f.write(create_index(galleries)..encode('ascii', 'ignore'))
+        f.write(create_index(galleries).encode('ascii', 'ignore'))
