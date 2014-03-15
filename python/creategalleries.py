@@ -14,7 +14,7 @@ def create_galleries(gallery_list, target_dir, juicebox_src_dir):
         gallery_name = os.path.basename(source_dir)
         jbox.create_gallery(
             source_dir, 
-            os.path.join(target_dir, source_dir.strip('/')),
+            os.path.join(target_dir, source_dir.strip(common_prefix + '/')),
             "images", "thumbs",
             gallery_name,
             juicebox_src_dir)
