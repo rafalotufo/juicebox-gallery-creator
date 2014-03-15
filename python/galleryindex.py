@@ -22,8 +22,8 @@ def find_galleries(root_path):
             image = os.path.join(dirpath, doc.getchildren()[1].attrib['imageURL'])
             yield {
                 'name': gallery_name,
-                'path': dirpath,
-                'image': image
+                'path': dirpath.strip(root_path + '/'),
+                'image': image.strip(root_path + '/')
             }
 
 def create_index(galleries):
@@ -78,11 +78,11 @@ body {
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('root_folder')
-    parser.add_argument('target')
+    # parser.add_argument('target')
     parser.add_argument('assets_dir')
     args = parser.parse_args()
 
     galleries = find_galleries(args.root_folder)
-    shutil.copytree(args.assets_dir, os.path.join(args.target, 'asset'))
-    with open(os.path.join(args.target, 'index.html'), 'w') as f:
+    shutil.copytree(args.assets_dir, os.path.join(args.root_folder, 'asset'))
+    with open(os.path.join(args.root_folder, 'index.html'), 'w') as f:
         f.write(create_index(galleries))
