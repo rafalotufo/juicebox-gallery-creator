@@ -29,7 +29,7 @@ def find_galleries(root_path):
             yield {
                 'name': gallery_name,
                 'path': dirpath.replace(root_path + '/', ''),
- fdså2                'image': image.replace(root_path + '/', '')
+                'image': image.replace(root_path + '/', '')
             }
 
 def create_index(galleries):
