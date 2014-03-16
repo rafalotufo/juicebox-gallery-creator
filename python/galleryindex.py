@@ -10,9 +10,10 @@ create gallery index
 '''
 
 def decode(s):
-    result = 'can\'t decode'
-    try
+    try:
         return s.encode('ascii', 'ignore')
+    except:
+        return 'can\'t decode'
 
 def get_gallery_name(config_file):
     
