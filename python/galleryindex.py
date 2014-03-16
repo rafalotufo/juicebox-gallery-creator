@@ -29,7 +29,7 @@ def find_galleries(root_path):
                     'image': image.replace(root_path + '/', '')
                 }
             except Exception as e:
-                print 'Error opening ' + config_file ': %s' % e
+                print ('Error opening ' + config_file + ': %s') % str(e)
 
 def create_index(galleries):
     gallery_list = ''
