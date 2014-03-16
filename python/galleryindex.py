@@ -44,7 +44,7 @@ def create_index(galleries):
         </a>
     </div>
         
-    ''' % (encode(gallery['path']), encode(gallery['image']), encode(gallery['name']))
+    ''' % (decode(gallery['path']), decode(gallery['image']), decode(gallery['name']))
 
     head = '''
 <script type="text/javascript" src="asset/jquery.js"></script>
