@@ -15,22 +15,21 @@ def decode(s):
     except:
         return 'can\'t decode'
 
-def get_gallery_name(config_file):
-    
-    return doc.attrib['galleryTitle']
-
 def find_galleries(root_path):
     for dirpath, _, filenames in os.walk(root_path):
         if 'config.xml' in filenames and 'index.html' in filenames:
             config_file = os.path.join(dirpath, 'config.xml')
-            doc = ET.parse(config_file).getroot()
-            gallery_name = doc.attrib['galleryTitle']
-            image = os.path.join(dirpath, doc.getchildren()[1].attrib['imageURL'])
-            yield {
-                'name': gallery_name,
-                'path': dirpath.replace(root_path + '/', ''),
-                'image': image.replace(root_path + '/', '')
-            }
+            try:
+                doc = ET.parse(config_file).getroot()
+                gallery_name = doc.attrib['galleryTitle']
+                image = os.path.join(dirpath, doc.getchildren()[1].attrib['imageURL'])
+                yield {
+                    'name': gallery_name,
+                    'path': dirpath.replace(root_path + '/', ''),
+                    'image': image.replace(root_path + '/', '')
+                }
+            except Exception as e:
+                print 'Error opening ' + config_file ': %s' % e
 
 def create_index(galleries):
     gallery_list = ''
