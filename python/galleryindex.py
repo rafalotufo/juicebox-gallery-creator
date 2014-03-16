@@ -9,6 +9,11 @@ import shutil
 create gallery index
 '''
 
+def decode(s):
+    result = 'can\'t decode'
+    try
+        return s.encode('ascii', 'ignore')
+
 def get_gallery_name(config_file):
     
     return doc.attrib['galleryTitle']
@@ -23,7 +28,7 @@ def find_galleries(root_path):
             yield {
                 'name': gallery_name,
                 'path': dirpath.replace(root_path + '/', ''),
-                'image': image.replace(root_path + '/', '')
+ fdså2                'image': image.replace(root_path + '/', '')
             }
 
 def create_index(galleries):
@@ -38,7 +43,7 @@ def create_index(galleries):
         </a>
     </div>
         
-    ''' % (gallery['path'], gallery['image'], gallery['name'])
+    ''' % (encode(gallery['path']), encode(gallery['image']), encode(gallery['name']))
 
     head = '''
 <script type="text/javascript" src="asset/jquery.js"></script>
